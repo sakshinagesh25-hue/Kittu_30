@@ -1,116 +1,70 @@
 {
-    "name": "moment",
-    "version": "2.30.1",
-    "description": "Parse, validate, manipulate, and display dates",
-    "homepage": "https://momentjs.com",
-    "author": "Iskren Ivov Chernev <iskren.chernev@gmail.com> (https://github.com/ichernev)",
-    "contributors": [
-        "Tim Wood <washwithcare@gmail.com> (http://timwoodcreates.com/)",
-        "Rocky Meza (http://rockymeza.com)",
-        "Matt Johnson <mj1856@hotmail.com> (http://codeofmatt.com)",
-        "Isaac Cambron <isaac@isaaccambron.com> (http://isaaccambron.com)",
-        "Andre Polykanine <andre@oire.org> (https://github.com/oire)"
-    ],
-    "keywords": [
-        "moment",
-        "date",
-        "time",
-        "parse",
-        "format",
-        "validate",
-        "i18n",
-        "l10n",
-        "ender"
-    ],
-    "main": "./moment.js",
-    "jsnext:main": "./dist/moment.js",
-    "typings": "./moment.d.ts",
-    "typesVersions": {
-        ">=3.1": {
-            "*": [
-                "ts3.1-typings/*"
-            ],
-            "min/moment-with-locales": [
-                "ts3.1-typings/moment.d.ts"
-            ]
-        }
-    },
-    "engines": {
-        "node": "*"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/moment/moment.git"
-    },
-    "bugs": {
-        "url": "https://github.com/moment/moment/issues"
-    },
-    "license": "MIT",
-    "devDependencies": {
-        "benchmark": "latest",
-        "coveralls": "latest",
-        "cross-env": "^6.0.3",
-        "es6-promise": "latest",
-        "eslint": "latest",
-        "grunt": "latest",
-        "grunt-benchmark": "latest",
-        "grunt-cli": "latest",
-        "grunt-contrib-clean": "latest",
-        "grunt-contrib-concat": "latest",
-        "grunt-contrib-copy": "latest",
-        "grunt-contrib-uglify": "latest",
-        "grunt-contrib-watch": "latest",
-        "grunt-env": "latest",
-        "grunt-exec": "latest",
-        "grunt-karma": "latest",
-        "grunt-nuget": "latest",
-        "grunt-string-replace": "latest",
-        "karma": "latest",
-        "karma-chrome-launcher": "latest",
-        "karma-firefox-launcher": "latest",
-        "karma-qunit": "latest",
-        "karma-sauce-launcher": "4.1.4",
-        "load-grunt-tasks": "latest",
-        "lodash": ">=4.17.19",
-        "node-qunit": "latest",
-        "nyc": "latest",
-        "prettier": "latest",
-        "qunit": "^2.10.0",
-        "rollup": "2.17.1",
-        "typescript": "^1.8.10",
-        "typescript3": "npm:typescript@^3.1.6",
-        "uglify-js": "latest",
-        "@types/node": "17.0.21"
-    },
-    "ender": "./ender.js",
-    "dojoBuild": "package.js",
-    "jspm": {
-        "files": [
-            "moment.js",
-            "moment.d.ts",
-            "locale"
-        ],
-        "map": {
-            "moment": "./moment"
-        },
-        "buildConfig": {
-            "uglify": true
-        }
-    },
-    "scripts": {
-        "ts3.1-typescript-test": "cross-env node_modules/typescript3/bin/tsc --project ts3.1-typing-tests",
-        "typescript-test": "cross-env node_modules/typescript/bin/tsc --project typing-tests",
-        "test": "grunt test",
-        "eslint": "eslint Gruntfile.js tasks src",
-        "prettier-check": "prettier --check Gruntfile.js tasks src",
-        "prettier-fmt": "prettier --write Gruntfile.js tasks src",
-        "coverage": "nyc npm test && nyc report",
-        "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
-    },
-    "spm": {
-        "main": "moment.js",
-        "output": [
-            "locale/*.js"
-        ]
-    }
+  "name": "lucide-react",
+  "description": "A Lucide icon library package for React applications",
+  "version": "0.437.0",
+  "license": "ISC",
+  "homepage": "https://lucide.dev",
+  "bugs": "https://github.com/lucide-icons/lucide/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lucide-icons/lucide.git",
+    "directory": "packages/lucide-react"
+  },
+  "keywords": [
+    "Lucide",
+    "React",
+    "Feather",
+    "Icons",
+    "Icon",
+    "SVG",
+    "Feather Icons",
+    "Fontawesome",
+    "Font Awesome"
+  ],
+  "author": "Eric Fennis",
+  "amdName": "lucide-react",
+  "main": "dist/cjs/lucide-react.js",
+  "main:umd": "dist/umd/lucide-react.js",
+  "module": "dist/esm/lucide-react.js",
+  "unpkg": "dist/umd/lucide-react.min.js",
+  "typings": "dist/lucide-react.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "dynamicIconImports.js",
+    "dynamicIconImports.js.map",
+    "dynamicIconImports.d.ts"
+  ],
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.1.6",
+    "@testing-library/react": "^14.1.2",
+    "@types/react": "^18.2.37",
+    "@vitejs/plugin-react": "^4.2.1",
+    "jest-serializer-html": "^7.1.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "rollup": "^4.9.2",
+    "rollup-plugin-dts": "^6.1.0",
+    "typescript": "^4.9.5",
+    "vite": "5.0.13",
+    "vitest": "^1.1.1",
+    "@lucide/build-icons": "1.1.0",
+    "@lucide/rollup-plugins": "1.0.0",
+    "@lucide/shared": "1.0.0"
+  },
+  "peerDependencies": {
+    "react": "^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc"
+  },
+  "scripts": {
+    "build": "pnpm clean && pnpm copy:license && pnpm build:icons && pnpm typecheck && pnpm build:bundles",
+    "copy:license": "cp ../../LICENSE ./LICENSE",
+    "clean": "rm -rf dist && rm -rf stats && rm -rf ./src/icons/*.ts && rm -f dynamicIconImports.*",
+    "build:icons": "build-icons --output=./src --templateSrc=./scripts/exportTemplate.mjs --renderUniqueKey --withAliases --withDynamicImports --separateAliasesFile --aliasesFileExtension=.ts --iconFileExtension=.ts --exportFileName=index.ts",
+    "build:bundles": "rollup -c ./rollup.config.mjs",
+    "typecheck": "tsc",
+    "typecheck:watch": "tsc -w",
+    "test": "pnpm build:icons && vitest run",
+    "test:watch": "vitest watch",
+    "version": "pnpm version --git-tag-version=false"
+  }
 }

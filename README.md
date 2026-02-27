@@ -1,55 +1,51 @@
-# [Moment.js](http://momentjs.com/)
+<p align="center">
+  <a href="https://github.com/lucide-icons/lucide#gh-light-mode-only">
+    <img src="https://lucide.dev/lucide-react.svg#gh-light-mode-only" alt="Lucide React - Implementation of the lucide icon library for react applications." width="540">
+  </a>
+  <a href="https://github.com/lucide-icons/lucide#gh-dark-mode-only">
+    <img src="https://lucide.dev/package-logos/dark/lucide-react.svg#gh-dark-mode-only" alt="Lucide React - Implementation of the lucide icon library for react applications." width="540">
+  </a>
+</p>
 
-[![NPM version][npm-version-image]][npm-url]
-[![NPM downloads][npm-downloads-image]][npm-downloads-url]
-[![MIT License][license-image]][license-url]
-[![Build Status][travis-image]][travis-url]
-[![Coverage Status][coveralls-image]][coveralls-url]
-[![FOSSA Status][fossa-badge-image]][fossa-badge-url]
-[![SemVer compatibility][semver-image]][semver-url]
 
-A JavaScript date library for parsing, validating, manipulating, and formatting dates.
+# Lucide React
 
-## Project Status
+Implementation of the lucide icon library for react applications.
 
-Moment.js is a legacy project, now in maintenance mode.  In most cases, you should choose a different library.
+> What is lucide? Read it [here](https://github.com/lucide-icons/lucide#what-is-lucide).
 
-For more details and recommendations, please see [Project Status](https://momentjs.com/docs/#/-project-status/) in the docs.
+## Installation
 
-*Thank you.*
+```sh
+yarn add lucide-react
+```
 
-## Resources
+or
 
-- [Documentation](https://momentjs.com/docs/)
-- [Changelog](CHANGELOG.md)
-- [Stack Overflow](https://stackoverflow.com/questions/tagged/momentjs)
+```sh
+npm install lucide-react
+```
+
+## Documentation
+
+For full documentation, visit [lucide.dev](https://lucide.dev/guide/packages/lucide-react)
+
+## Community
+
+Join the [Discord server](https://discord.gg/EH6nSts) to chat with the maintainers and other users.
 
 ## License
 
-Moment.js is freely distributable under the terms of the [MIT license][license-url].
+Lucide is licensed under the ISC license. See [LICENSE](https://lucide.dev/license).
 
-[![FOSSA Status][fossa-large-image]][fossa-large-url]
+## Sponsors
 
-[license-image]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat
-[license-url]: LICENSE
+<a href="https://vercel.com?utm_source=lucide&utm_campaign=oss">
+  <img src="https://lucide.dev/vercel.svg" alt="Powered by Vercel" width="200" />
+</a>
 
-[npm-url]: https://npmjs.org/package/moment
-[npm-version-image]: https://img.shields.io/npm/v/moment.svg?style=flat
+<a href="https://www.digitalocean.com/?refcode=b0877a2caebd&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge"><img src="https://lucide.dev/digitalocean.svg" width="200" alt="DigitalOcean Referral Badge" /></a>
 
-[npm-downloads-image]: https://img.shields.io/npm/dm/moment.svg?style=flat
-[npm-downloads-url]: https://npmcharts.com/compare/moment?minimal=true
+### Awesome backer 🍺
 
-[travis-url]: https://travis-ci.org/moment/moment
-[travis-image]: https://img.shields.io/travis/moment/moment/develop.svg?style=flat
-
-[coveralls-image]: https://coveralls.io/repos/moment/moment/badge.svg?branch=develop
-[coveralls-url]: https://coveralls.io/r/moment/moment?branch=develop
-
-[fossa-badge-image]: https://app.fossa.io/api/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Fmoment%2Fmoment.svg?type=shield
-[fossa-badge-url]: https://app.fossa.io/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Fmoment%2Fmoment?ref=badge_shield
-
-[fossa-large-image]: https://app.fossa.io/api/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Fmoment%2Fmoment.svg?type=large
-[fossa-large-url]: https://app.fossa.io/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Fmoment%2Fmoment?ref=badge_large
-
-[semver-image]: https://api.dependabot.com/badges/compatibility_score?dependency-name=moment&package-manager=npm_and_yarn&version-scheme=semver
-[semver-url]: https://dependabot.com/compatibility-score.html?dependency-name=moment&package-manager=npm_and_yarn&version-scheme=semver
+<a href="https://www.scipress.io?utm_source=lucide"><img src="https://lucide.dev/sponsors/scipress.svg" width="180" alt="Scipress sponsor badge" /></a>
