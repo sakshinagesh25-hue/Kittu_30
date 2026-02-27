@@ -1,50 +1,116 @@
 {
-  "name": "node-gyp",
-  "description": "Node.js native addon build tool",
-  "license": "MIT",
-  "keywords": [
-    "native",
-    "addon",
-    "module",
-    "c",
-    "c++",
-    "bindings",
-    "gyp"
-  ],
-  "version": "8.4.1",
-  "installVersion": 9,
-  "author": "Nathan Rajlich <nathan@tootallnate.net> (http://tootallnate.net)",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/nodejs/node-gyp.git"
-  },
-  "preferGlobal": true,
-  "bin": "./bin/node-gyp.js",
-  "main": "./lib/node-gyp.js",
-  "dependencies": {
-    "env-paths": "^2.2.0",
-    "glob": "^7.1.4",
-    "graceful-fs": "^4.2.6",
-    "make-fetch-happen": "^9.1.0",
-    "nopt": "^5.0.0",
-    "npmlog": "^6.0.0",
-    "rimraf": "^3.0.2",
-    "semver": "^7.3.5",
-    "tar": "^6.1.2",
-    "which": "^2.0.2"
-  },
-  "engines": {
-    "node": ">= 10.12.0"
-  },
-  "devDependencies": {
-    "bindings": "^1.5.0",
-    "nan": "^2.14.2",
-    "require-inject": "^1.4.4",
-    "standard": "^14.3.4",
-    "tap": "^12.7.0"
-  },
-  "scripts": {
-    "lint": "standard */*.js test/**/*.js",
-    "test": "npm run lint && tap --timeout=120 test/test-*"
-  }
+    "name": "moment",
+    "version": "2.30.1",
+    "description": "Parse, validate, manipulate, and display dates",
+    "homepage": "https://momentjs.com",
+    "author": "Iskren Ivov Chernev <iskren.chernev@gmail.com> (https://github.com/ichernev)",
+    "contributors": [
+        "Tim Wood <washwithcare@gmail.com> (http://timwoodcreates.com/)",
+        "Rocky Meza (http://rockymeza.com)",
+        "Matt Johnson <mj1856@hotmail.com> (http://codeofmatt.com)",
+        "Isaac Cambron <isaac@isaaccambron.com> (http://isaaccambron.com)",
+        "Andre Polykanine <andre@oire.org> (https://github.com/oire)"
+    ],
+    "keywords": [
+        "moment",
+        "date",
+        "time",
+        "parse",
+        "format",
+        "validate",
+        "i18n",
+        "l10n",
+        "ender"
+    ],
+    "main": "./moment.js",
+    "jsnext:main": "./dist/moment.js",
+    "typings": "./moment.d.ts",
+    "typesVersions": {
+        ">=3.1": {
+            "*": [
+                "ts3.1-typings/*"
+            ],
+            "min/moment-with-locales": [
+                "ts3.1-typings/moment.d.ts"
+            ]
+        }
+    },
+    "engines": {
+        "node": "*"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/moment/moment.git"
+    },
+    "bugs": {
+        "url": "https://github.com/moment/moment/issues"
+    },
+    "license": "MIT",
+    "devDependencies": {
+        "benchmark": "latest",
+        "coveralls": "latest",
+        "cross-env": "^6.0.3",
+        "es6-promise": "latest",
+        "eslint": "latest",
+        "grunt": "latest",
+        "grunt-benchmark": "latest",
+        "grunt-cli": "latest",
+        "grunt-contrib-clean": "latest",
+        "grunt-contrib-concat": "latest",
+        "grunt-contrib-copy": "latest",
+        "grunt-contrib-uglify": "latest",
+        "grunt-contrib-watch": "latest",
+        "grunt-env": "latest",
+        "grunt-exec": "latest",
+        "grunt-karma": "latest",
+        "grunt-nuget": "latest",
+        "grunt-string-replace": "latest",
+        "karma": "latest",
+        "karma-chrome-launcher": "latest",
+        "karma-firefox-launcher": "latest",
+        "karma-qunit": "latest",
+        "karma-sauce-launcher": "4.1.4",
+        "load-grunt-tasks": "latest",
+        "lodash": ">=4.17.19",
+        "node-qunit": "latest",
+        "nyc": "latest",
+        "prettier": "latest",
+        "qunit": "^2.10.0",
+        "rollup": "2.17.1",
+        "typescript": "^1.8.10",
+        "typescript3": "npm:typescript@^3.1.6",
+        "uglify-js": "latest",
+        "@types/node": "17.0.21"
+    },
+    "ender": "./ender.js",
+    "dojoBuild": "package.js",
+    "jspm": {
+        "files": [
+            "moment.js",
+            "moment.d.ts",
+            "locale"
+        ],
+        "map": {
+            "moment": "./moment"
+        },
+        "buildConfig": {
+            "uglify": true
+        }
+    },
+    "scripts": {
+        "ts3.1-typescript-test": "cross-env node_modules/typescript3/bin/tsc --project ts3.1-typing-tests",
+        "typescript-test": "cross-env node_modules/typescript/bin/tsc --project typing-tests",
+        "test": "grunt test",
+        "eslint": "eslint Gruntfile.js tasks src",
+        "prettier-check": "prettier --check Gruntfile.js tasks src",
+        "prettier-fmt": "prettier --write Gruntfile.js tasks src",
+        "coverage": "nyc npm test && nyc report",
+        "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
+    },
+    "spm": {
+        "main": "moment.js",
+        "output": [
+            "locale/*.js"
+        ]
+    }
 }
