@@ -1,70 +1,141 @@
 {
-  "name": "lucide-react",
-  "description": "A Lucide icon library package for React applications",
-  "version": "0.437.0",
-  "license": "ISC",
-  "homepage": "https://lucide.dev",
-  "bugs": "https://github.com/lucide-icons/lucide/issues",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/lucide-icons/lucide.git",
-    "directory": "packages/lucide-react"
-  },
-  "keywords": [
-    "Lucide",
-    "React",
-    "Feather",
-    "Icons",
-    "Icon",
-    "SVG",
-    "Feather Icons",
-    "Fontawesome",
-    "Font Awesome"
-  ],
-  "author": "Eric Fennis",
-  "amdName": "lucide-react",
-  "main": "dist/cjs/lucide-react.js",
-  "main:umd": "dist/umd/lucide-react.js",
-  "module": "dist/esm/lucide-react.js",
-  "unpkg": "dist/umd/lucide-react.min.js",
-  "typings": "dist/lucide-react.d.ts",
-  "sideEffects": false,
-  "files": [
-    "dist",
-    "dynamicIconImports.js",
-    "dynamicIconImports.js.map",
-    "dynamicIconImports.d.ts"
-  ],
-  "devDependencies": {
-    "@testing-library/jest-dom": "^6.1.6",
-    "@testing-library/react": "^14.1.2",
-    "@types/react": "^18.2.37",
-    "@vitejs/plugin-react": "^4.2.1",
-    "jest-serializer-html": "^7.1.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "rollup": "^4.9.2",
-    "rollup-plugin-dts": "^6.1.0",
-    "typescript": "^4.9.5",
-    "vite": "5.0.13",
-    "vitest": "^1.1.1",
-    "@lucide/build-icons": "1.1.0",
-    "@lucide/rollup-plugins": "1.0.0",
-    "@lucide/shared": "1.0.0"
-  },
-  "peerDependencies": {
-    "react": "^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc"
-  },
-  "scripts": {
-    "build": "pnpm clean && pnpm copy:license && pnpm build:icons && pnpm typecheck && pnpm build:bundles",
-    "copy:license": "cp ../../LICENSE ./LICENSE",
-    "clean": "rm -rf dist && rm -rf stats && rm -rf ./src/icons/*.ts && rm -f dynamicIconImports.*",
-    "build:icons": "build-icons --output=./src --templateSrc=./scripts/exportTemplate.mjs --renderUniqueKey --withAliases --withDynamicImports --separateAliasesFile --aliasesFileExtension=.ts --iconFileExtension=.ts --exportFileName=index.ts",
-    "build:bundles": "rollup -c ./rollup.config.mjs",
-    "typecheck": "tsc",
-    "typecheck:watch": "tsc -w",
-    "test": "pnpm build:icons && vitest run",
-    "test:watch": "vitest watch",
-    "version": "pnpm version --git-tag-version=false"
-  }
+    "name": "framer-motion",
+    "version": "11.18.2",
+    "description": "A simple and powerful JavaScript animation library",
+    "main": "dist/cjs/index.js",
+    "module": "dist/es/index.mjs",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "require": "./dist/cjs/index.js",
+            "import": "./dist/es/index.mjs",
+            "default": "./dist/cjs/index.js"
+        },
+        "./dom/mini": {
+            "types": "./dist/dom-mini.d.ts",
+            "require": "./dist/cjs/dom-mini.js",
+            "import": "./dist/es/dom-mini.mjs",
+            "default": "./dist/cjs/dom-mini.js"
+        },
+        "./dom": {
+            "types": "./dist/dom.d.ts",
+            "require": "./dist/cjs/dom.js",
+            "import": "./dist/es/dom.mjs",
+            "default": "./dist/cjs/dom.js"
+        },
+        "./client": {
+            "types": "./dist/client.d.ts",
+            "require": "./dist/cjs/client.js",
+            "import": "./dist/es/client.mjs",
+            "default": "./dist/cjs/client.js"
+        },
+        "./m": {
+            "types": "./dist/m.d.ts",
+            "require": "./dist/cjs/m.js",
+            "import": "./dist/es/m.mjs",
+            "default": "./dist/cjs/m.js"
+        },
+        "./mini": {
+            "types": "./dist/mini.d.ts",
+            "require": "./dist/cjs/mini.js",
+            "import": "./dist/es/mini.mjs",
+            "default": "./dist/cjs/mini.js"
+        },
+        "./projection": {
+            "import": "./dist/es/projection.mjs",
+            "default": "./dist/es/projection.mjs"
+        },
+        "./package.json": "./package.json"
+    },
+    "types": "dist/index.d.ts",
+    "author": "Matt Perry",
+    "license": "MIT",
+    "repository": "https://github.com/motiondivision/motion/",
+    "sideEffects": false,
+    "keywords": [
+        "react animation",
+        "react",
+        "three",
+        "3d",
+        "pose",
+        "react pose",
+        "animation",
+        "gestures",
+        "drag",
+        "spring",
+        "popmotion",
+        "framer",
+        "waapi"
+    ],
+    "scripts": {
+        "eslint": "yarn run lint",
+        "lint": "yarn eslint src/**/*.ts",
+        "build": "yarn clean && tsc --noEmitOnError -p . && rollup -c && node ./scripts/check-bundle.js",
+        "dev": "yarn watch",
+        "clean": "rm -rf types dist lib",
+        "test": "yarn test-server && yarn test-client",
+        "test-client": "jest --config jest.config.json --max-workers=2",
+        "test-server": "jest --config jest.config.ssr.json",
+        "prettier": "prettier ./src/* --write",
+        "watch": "concurrently -c blue,red -n tsc --noEmitOnError ,rollup --kill-others \"tsc  --noEmitOnError --watch -p . --preserveWatchOutput\" \"rollup --config --watch --no-watch.clearScreen\"",
+        "prepack": "yarn build",
+        "postpublish": "git push --tags",
+        "measure": "rollup -c ./rollup.size.config.mjs"
+    },
+    "dependencies": {
+        "motion-dom": "^11.18.1",
+        "motion-utils": "^11.18.1",
+        "tslib": "^2.4.0"
+    },
+    "devDependencies": {
+        "@types/three": "0.137.0",
+        "three": "0.137.0"
+    },
+    "peerDependencies": {
+        "@emotion/is-prop-valid": "*",
+        "react": "^18.0.0 || ^19.0.0",
+        "react-dom": "^18.0.0 || ^19.0.0"
+    },
+    "peerDependenciesMeta": {
+        "@emotion/is-prop-valid": {
+            "optional": true
+        },
+        "react": {
+            "optional": true
+        },
+        "react-dom": {
+            "optional": true
+        }
+    },
+    "bundlesize": [
+        {
+            "path": "./dist/size-rollup-motion.js",
+            "maxSize": "34.7 kB"
+        },
+        {
+            "path": "./dist/size-rollup-m.js",
+            "maxSize": "5.9 kB"
+        },
+        {
+            "path": "./dist/size-rollup-dom-animation.js",
+            "maxSize": "17.55 kB"
+        },
+        {
+            "path": "./dist/size-rollup-dom-max.js",
+            "maxSize": "29.6 kB"
+        },
+        {
+            "path": "./dist/size-rollup-animate.js",
+            "maxSize": "18.45 kB"
+        },
+        {
+            "path": "./dist/size-rollup-scroll.js",
+            "maxSize": "5.2 kB"
+        },
+        {
+            "path": "./dist/size-rollup-waapi-animate.js",
+            "maxSize": "2.7 kB"
+        }
+    ],
+    "gitHead": "4104786df5cdc20315ade57aa52bbda472e8abfa"
 }
