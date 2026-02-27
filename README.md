@@ -1,213 +1,256 @@
-If you want to write an option parser, and have it be good, there are
-two ways to do it.  The Right Way, and the Wrong Way.
+# `node-gyp` - Node.js native addon build tool
 
-The Wrong Way is to sit down and write an option parser.  We've all done
-that.
+[![Build Status](https://github.com/nodejs/node-gyp/workflows/Tests/badge.svg?branch=master)](https://github.com/nodejs/node-gyp/actions?query=workflow%3ATests+branch%3Amaster)
+![npm](https://img.shields.io/npm/dm/node-gyp)
 
-The Right Way is to write some complex configurable program with so many
-options that you hit the limit of your frustration just trying to
-manage them all, and defer it with duct-tape solutions until you see
-exactly to the core of the problem, and finally snap and write an
-awesome option parser.
+`node-gyp` is a cross-platform command-line tool written in Node.js for
+compiling native addon modules for Node.js. It contains a vendored copy of the
+[gyp-next](https://github.com/nodejs/gyp-next) project that was previously used
+by the Chromium team, extended to support the development of Node.js native addons.
 
-If you want to write an option parser, don't write an option parser.
-Write a package manager, or a source control system, or a service
-restarter, or an operating system.  You probably won't end up with a
-good one of those, but if you don't give up, and you are relentless and
-diligent enough in your procrastination, you may just end up with a very
-nice option parser.
+Note that `node-gyp` is _not_ used to build Node.js itself.
 
-## USAGE
+Multiple target versions of Node.js are supported (i.e. `0.8`, ..., `4`, `5`, `6`,
+etc.), regardless of what version of Node.js is actually installed on your system
+(`node-gyp` downloads the necessary development files or headers for the target version).
 
-```javascript
-// my-program.js
-var nopt = require("nopt")
-  , Stream = require("stream").Stream
-  , path = require("path")
-  , knownOpts = { "foo" : [String, null]
-                , "bar" : [Stream, Number]
-                , "baz" : path
-                , "bloo" : [ "big", "medium", "small" ]
-                , "flag" : Boolean
-                , "pick" : Boolean
-                , "many1" : [String, Array]
-                , "many2" : [path, Array]
-                }
-  , shortHands = { "foofoo" : ["--foo", "Mr. Foo"]
-                 , "b7" : ["--bar", "7"]
-                 , "m" : ["--bloo", "medium"]
-                 , "p" : ["--pick"]
-                 , "f" : ["--flag"]
-                 }
-             // everything is optional.
-             // knownOpts and shorthands default to {}
-             // arg list defaults to process.argv
-             // slice defaults to 2
-  , parsed = nopt(knownOpts, shortHands, process.argv, 2)
-console.log(parsed)
+## Features
+
+ * The same build commands work on any of the supported platforms
+ * Supports the targeting of different versions of Node.js
+
+## Installation
+
+You can install `node-gyp` using `npm`:
+
+``` bash
+npm install -g node-gyp
 ```
 
-This would give you support for any of the following:
+Depending on your operating system, you will need to install:
 
-```console
-$ node my-program.js --foo "blerp" --no-flag
-{ "foo" : "blerp", "flag" : false }
+### On Unix
 
-$ node my-program.js ---bar 7 --foo "Mr. Hand" --flag
-{ bar: 7, foo: "Mr. Hand", flag: true }
+   * Python v3.6, v3.7, v3.8, or v3.9
+   * `make`
+   * A proper C/C++ compiler toolchain, like [GCC](https://gcc.gnu.org)
 
-$ node my-program.js --foo "blerp" -f -----p
-{ foo: "blerp", flag: true, pick: true }
+### On macOS
 
-$ node my-program.js -fp --foofoo
-{ foo: "Mr. Foo", flag: true, pick: true }
+**ATTENTION**: If your Mac has been _upgraded_ to macOS Catalina (10.15), please read [macOS_Catalina.md](macOS_Catalina.md).
 
-$ node my-program.js --foofoo -- -fp  # -- stops the flag parsing.
-{ foo: "Mr. Foo", argv: { remain: ["-fp"] } }
+   * Python v3.6, v3.7, v3.8, or v3.9
+   * [Xcode](https://developer.apple.com/xcode/download/)
+     * You also need to install the `XCode Command Line Tools` by running `xcode-select --install`. Alternatively, if you already have the full Xcode installed, you can find them under the menu `Xcode -> Open Developer Tool -> More Developer Tools...`. This step will install `clang`, `clang++`, and `make`.
 
-$ node my-program.js --blatzk -fp # unknown opts are ok.
-{ blatzk: true, flag: true, pick: true }
+### On Windows
 
-$ node my-program.js --blatzk=1000 -fp # but you need to use = if they have a value
-{ blatzk: 1000, flag: true, pick: true }
+Install the current version of Python from the [Microsoft Store package](https://docs.python.org/3/using/windows.html#the-microsoft-store-package).
 
-$ node my-program.js --no-blatzk -fp # unless they start with "no-"
-{ blatzk: false, flag: true, pick: true }
+Install tools and configuration manually:
+   * Install Visual C++ Build Environment: [Visual Studio Build Tools](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools)
+   (using "Visual C++ build tools" workload) or [Visual Studio Community](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community)
+   (using the "Desktop development with C++" workload)
+   * Launch cmd, `npm config set msvs_version 2017`
 
-$ node my-program.js --baz b/a/z # known paths are resolved.
-{ baz: "/Users/isaacs/b/a/z" }
+   If the above steps didn't work for you, please visit [Microsoft's Node.js Guidelines for Windows](https://github.com/Microsoft/nodejs-guidelines/blob/master/windows-environment.md#compiling-native-addon-modules) for additional tips.
 
-# if Array is one of the types, then it can take many
-# values, and will always be an array.  The other types provided
-# specify what types are allowed in the list.
+   To target native ARM64 Node.js on Windows 10 on ARM, add the components "Visual C++ compilers and libraries for ARM64" and "Visual C++ ATL for ARM64".
 
-$ node my-program.js --many1 5 --many1 null --many1 foo
-{ many1: ["5", "null", "foo"] }
+### Configuring Python Dependency
 
-$ node my-program.js --many2 foo --many2 bar
-{ many2: ["/path/to/foo", "path/to/bar"] }
+`node-gyp` requires that you have installed a compatible version of Python, one of: v3.6, v3.7,
+v3.8, or v3.9. If you have multiple Python versions installed, you can identify which Python
+version `node-gyp` should use in one of the following ways:
+
+1. by setting the `--python` command-line option, e.g.:
+
+``` bash
+node-gyp <command> --python /path/to/executable/python
 ```
 
-Read the tests at the bottom of `lib/nopt.js` for more examples of
-what this puppy can do.
+2. If `node-gyp` is called by way of `npm`, *and* you have multiple versions of
+Python installed, then you can set `npm`'s 'python' config key to the appropriate
+value:
 
-## Types
-
-The following types are supported, and defined on `nopt.typeDefs`
-
-* String: A normal string.  No parsing is done.
-* path: A file system path.  Gets resolved against cwd if not absolute.
-* url: A url.  If it doesn't parse, it isn't accepted.
-* Number: Must be numeric.
-* Date: Must parse as a date. If it does, and `Date` is one of the options,
-  then it will return a Date object, not a string.
-* Boolean: Must be either `true` or `false`.  If an option is a boolean,
-  then it does not need a value, and its presence will imply `true` as
-  the value.  To negate boolean flags, do `--no-whatever` or `--whatever
-  false`
-* NaN: Means that the option is strictly not allowed.  Any value will
-  fail.
-* Stream: An object matching the "Stream" class in node.  Valuable
-  for use when validating programmatically.  (npm uses this to let you
-  supply any WriteStream on the `outfd` and `logfd` config options.)
-* Array: If `Array` is specified as one of the types, then the value
-  will be parsed as a list of options.  This means that multiple values
-  can be specified, and that the value will always be an array.
-
-If a type is an array of values not on this list, then those are
-considered valid values.  For instance, in the example above, the
-`--bloo` option can only be one of `"big"`, `"medium"`, or `"small"`,
-and any other value will be rejected.
-
-When parsing unknown fields, `"true"`, `"false"`, and `"null"` will be
-interpreted as their JavaScript equivalents.
-
-You can also mix types and values, or multiple types, in a list.  For
-instance `{ blah: [Number, null] }` would allow a value to be set to
-either a Number or null.  When types are ordered, this implies a
-preference, and the first type that can be used to properly interpret
-the value will be used.
-
-To define a new type, add it to `nopt.typeDefs`.  Each item in that
-hash is an object with a `type` member and a `validate` method.  The
-`type` member is an object that matches what goes in the type list.  The
-`validate` method is a function that gets called with `validate(data,
-key, val)`.  Validate methods should assign `data[key]` to the valid
-value of `val` if it can be handled properly, or return boolean
-`false` if it cannot.
-
-You can also call `nopt.clean(data, types, typeDefs)` to clean up a
-config object and remove its invalid properties.
-
-## Error Handling
-
-By default, nopt outputs a warning to standard error when invalid values for
-known options are found.  You can change this behavior by assigning a method
-to `nopt.invalidHandler`.  This method will be called with
-the offending `nopt.invalidHandler(key, val, types)`.
-
-If no `nopt.invalidHandler` is assigned, then it will console.error
-its whining.  If it is assigned to boolean `false` then the warning is
-suppressed.
-
-## Abbreviations
-
-Yes, they are supported.  If you define options like this:
-
-```javascript
-{ "foolhardyelephants" : Boolean
-, "pileofmonkeys" : Boolean }
+``` bash
+npm config set python /path/to/executable/python
 ```
 
-Then this will work:
+3. If the `PYTHON` environment variable is set to the path of a Python executable,
+then that version will be used, if it is a compatible version.
 
-```bash
-node program.js --foolhar --pil
-node program.js --no-f --pileofmon
-# etc.
+4. If the `NODE_GYP_FORCE_PYTHON` environment variable is set to the path of a
+Python executable, it will be used instead of any of the other configured or
+builtin Python search paths. If it's not a compatible version, no further
+searching will be done.
+
+### Build for Third Party Node.js Runtimes
+
+When building modules for thid party Node.js runtimes like Electron, which have
+different build configurations from the official Node.js distribution, you
+should use `--dist-url` or `--nodedir` flags to specify the headers of the
+runtime to build for.
+
+Also when `--dist-url` or `--nodedir` flags are passed, node-gyp will use the
+`config.gypi` shipped in the headers distribution to generate build
+configurations, which is different from the default mode that would use the
+`process.config` object of the running Node.js instance.
+
+Some old versions of Electron shipped malformed `config.gypi` in their headers
+distributions, and you might need to pass `--force-process-config` to node-gyp
+to work around configuration errors.
+
+## How to Use
+
+To compile your native addon, first go to its root directory:
+
+``` bash
+cd my_node_addon
 ```
 
-## Shorthands
+The next step is to generate the appropriate project build files for the current
+platform. Use `configure` for that:
 
-Shorthands are a hash of shorter option names to a snippet of args that
-they expand to.
+``` bash
+node-gyp configure
+```
 
-If multiple one-character shorthands are all combined, and the
-combination does not unambiguously match any other option or shorthand,
-then they will be broken up into their constituent parts.  For example:
+Auto-detection fails for Visual C++ Build Tools 2015, so `--msvs_version=2015`
+needs to be added (not needed when run by npm as configured above):
+``` bash
+node-gyp configure --msvs_version=2015
+```
 
-```json
-{ "s" : ["--loglevel", "silent"]
-, "g" : "--global"
-, "f" : "--force"
-, "p" : "--parseable"
-, "l" : "--long"
+__Note__: The `configure` step looks for a `binding.gyp` file in the current
+directory to process. See below for instructions on creating a `binding.gyp` file.
+
+Now you will have either a `Makefile` (on Unix platforms) or a `vcxproj` file
+(on Windows) in the `build/` directory. Next, invoke the `build` command:
+
+``` bash
+node-gyp build
+```
+
+Now you have your compiled `.node` bindings file! The compiled bindings end up
+in `build/Debug/` or `build/Release/`, depending on the build mode. At this point,
+you can require the `.node` file with Node.js and run your tests!
+
+__Note:__ To create a _Debug_ build of the bindings file, pass the `--debug` (or
+`-d`) switch when running either the `configure`, `build` or `rebuild` commands.
+
+## The `binding.gyp` file
+
+A `binding.gyp` file describes the configuration to build your module, in a
+JSON-like format. This file gets placed in the root of your package, alongside
+`package.json`.
+
+A barebones `gyp` file appropriate for building a Node.js addon could look like:
+
+```python
+{
+  "targets": [
+    {
+      "target_name": "binding",
+      "sources": [ "src/binding.cc" ]
+    }
+  ]
 }
 ```
 
+## Further reading
+
+The **[docs](./docs/)** directory contains additional documentation on specific node-gyp topics that may be useful if you are experiencing problems installing or building addons using node-gyp.
+
+Some additional resources for Node.js native addons and writing `gyp` configuration files:
+
+ * ["Going Native" a nodeschool.io tutorial](http://nodeschool.io/#goingnative)
+ * ["Hello World" node addon example](https://github.com/nodejs/node/tree/master/test/addons/hello-world)
+ * [gyp user documentation](https://gyp.gsrc.io/docs/UserDocumentation.md)
+ * [gyp input format reference](https://gyp.gsrc.io/docs/InputFormatReference.md)
+ * [*"binding.gyp" files out in the wild* wiki page](./docs/binding.gyp-files-in-the-wild.md)
+
+## Commands
+
+`node-gyp` responds to the following commands:
+
+| **Command**   | **Description**
+|:--------------|:---------------------------------------------------------------
+| `help`        | Shows the help dialog
+| `build`       | Invokes `make`/`msbuild.exe` and builds the native addon
+| `clean`       | Removes the `build` directory if it exists
+| `configure`   | Generates project build files for the current platform
+| `rebuild`     | Runs `clean`, `configure` and `build` all in a row
+| `install`     | Installs Node.js header files for the given version
+| `list`        | Lists the currently installed Node.js header versions
+| `remove`      | Removes the Node.js header files for the given version
+
+
+## Command Options
+
+`node-gyp` accepts the following command options:
+
+| **Command**                       | **Description**
+|:----------------------------------|:------------------------------------------
+| `-j n`, `--jobs n`                | Run `make` in parallel. The value `max` will use all available CPU cores
+| `--target=v6.2.1`                 | Node.js version to build for (default is `process.version`)
+| `--silly`, `--loglevel=silly`     | Log all progress to console
+| `--verbose`, `--loglevel=verbose` | Log most progress to console
+| `--silent`, `--loglevel=silent`   | Don't log anything to console
+| `debug`, `--debug`                | Make Debug build (default is `Release`)
+| `--release`, `--no-debug`         | Make Release build
+| `-C $dir`, `--directory=$dir`     | Run command in different directory
+| `--make=$make`                    | Override `make` command (e.g. `gmake`)
+| `--thin=yes`                      | Enable thin static libraries
+| `--arch=$arch`                    | Set target architecture (e.g. ia32)
+| `--tarball=$path`                 | Get headers from a local tarball
+| `--devdir=$path`                  | SDK download directory (default is OS cache directory)
+| `--ensure`                        | Don't reinstall headers if already present
+| `--dist-url=$url`                 | Download header tarball from custom URL
+| `--proxy=$url`                    | Set HTTP(S) proxy for downloading header tarball
+| `--noproxy=$urls`                 | Set urls to ignore proxies when downloading header tarball
+| `--cafile=$cafile`                | Override default CA chain (to download tarball)
+| `--nodedir=$path`                 | Set the path to the node source code
+| `--python=$path`                  | Set path to the Python binary
+| `--msvs_version=$version`         | Set Visual Studio version (Windows only)
+| `--solution=$solution`            | Set Visual Studio Solution version (Windows only)
+| `--force-process-config`          | Force using runtime's `process.config` object to generate `config.gypi` file
+
+## Configuration
+
+### Environment variables
+
+Use the form `npm_config_OPTION_NAME` for any of the command options listed
+above (dashes in option names should be replaced by underscores).
+
+For example, to set `devdir` equal to `/tmp/.gyp`, you would:
+
+Run this on Unix:
+
 ```bash
-npm ls -sgflp
-# just like doing this:
-npm ls --loglevel silent --global --force --long --parseable
+export npm_config_devdir=/tmp/.gyp
 ```
 
-## The Rest of the args
+Or this on Windows:
 
-The config object returned by nopt is given a special member called
-`argv`, which is an object with the following fields:
+```console
+set npm_config_devdir=c:\temp\.gyp
+```
 
-* `remain`: The remaining args after all the parsing has occurred.
-* `original`: The args as they originally appeared.
-* `cooked`: The args after flags and shorthands are expanded.
+### `npm` configuration
 
-## Slicing
+Use the form `OPTION_NAME` for any of the command options listed above.
 
-Node programs are called with more or less the exact argv as it appears
-in C land, after the v8 and node-specific options have been plucked off.
-As such, `argv[0]` is always `node` and `argv[1]` is always the
-JavaScript program being run.
+For example, to set `devdir` equal to `/tmp/.gyp`, you would run:
 
-That's usually not very useful to you.  So they're sliced off by
-default.  If you want them, then you can pass in `0` as the last
-argument, or any other number that you'd like to slice off the start of
-the list.
+```bash
+npm config set [--global] devdir /tmp/.gyp
+```
+
+**Note:** Configuration set via `npm` will only be used when `node-gyp`
+is run via `npm`, not when `node-gyp` is run directly.
+
+## License
+
+`node-gyp` is available under the MIT license. See the [LICENSE
+file](LICENSE) for details.
